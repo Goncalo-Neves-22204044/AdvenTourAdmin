@@ -130,7 +130,6 @@ function CreateAttractionForm() {
           {errors.IdCountry && <p className="text-red-500 text-sm">{errors.IdCountry}</p>}
         </div>
 
-        // Render images fields
         <div>
             <ImageFields
               images={form.Images}
@@ -141,7 +140,6 @@ function CreateAttractionForm() {
             />
         </div>
 
-        // Render info fields
         <div>
           <InfoFields
             infos={form.Infos}
