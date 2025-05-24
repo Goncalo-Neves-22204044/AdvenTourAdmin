@@ -72,7 +72,7 @@ function CreateAttractionForm() {
     }
 
     try {
-      await axios.post(import.meta.env.VITE_API_URL + '/Attraction/attraction', form);
+      await axios.post('http://localhost:8080/deisi2056/api/Attraction/attraction', form);
       setStatus('success');
       setForm({ ...initialFormState, Images: [{ PictureRef: '', IsMain: false }], Infos: [{ Title: '', Description: '', IdAttractionInfoType: '' }] });
       setErrors({});
