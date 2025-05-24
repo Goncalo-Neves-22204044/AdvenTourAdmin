@@ -1,4 +1,3 @@
-// src/services/countryService.js
 import axios from 'axios';
 
 export async function getAllCountries() {
