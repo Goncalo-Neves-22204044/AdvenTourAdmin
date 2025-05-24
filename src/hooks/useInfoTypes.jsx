@@ -1,26 +1,21 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { getAllInfoTypes } from '../services/infoTypeService';
 
-export function useInfoTypes() {
+export const useInfoTypes = () => {
   const [infoTypes, setInfoTypes] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
-    async function loadInfoTypes() {
+    async function fetchInfoTypes() {
       try {
-        const response = await getAllInfoTypes();
-        setInfoTypes(response.data.data);
-      } catch (err) {
-        console.error('Erro ao carregar tipos de informação:', err);
-        setError(err);
-      } finally {
-        setLoading(false);
+        const data = await getAllInfoTypes();
+        setInfoTypes(data);
+      } catch (error) {
+        console.error('Erro ao carregar tipos de informação:', error);
       }
     }
 
-    loadInfoTypes();
+    fetchInfoTypes();
   }, []);
 
-  return { infoTypes, loading, error };
-}
+  return { infoTypes };
+};
