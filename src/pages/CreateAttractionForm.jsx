@@ -26,7 +26,7 @@ function CreateAttractionForm() {
 
   const handleImageChange = (index, field, value) => {
     const updated = [...form.Images];
-    updated[index][field] = field === 'IsMain' ? value : value;
+    updated[index][field] = value;
     setForm(prev => ({ ...prev, Images: updated }));
   };
 
@@ -74,7 +74,11 @@ function CreateAttractionForm() {
     try {
       await axios.post('http://localhost:8080/deisi2056/api/Attraction/attraction', form);
       setStatus('success');
-      setForm({ ...initialFormState, Images: [{ PictureRef: '', IsMain: false }], Infos: [{ Title: '', Description: '', IdAttractionInfoType: '' }] });
+      setForm({
+        ...initialFormState,
+        Images: [{ PictureRef: '', IsMain: false }],
+        Infos: [{ Title: '', Description: '', IdAttractionInfoType: '' }]
+      });
       setErrors({});
     } catch (error) {
       console.error('Erro ao criar atração:', error);
@@ -86,11 +90,11 @@ function CreateAttractionForm() {
   };
 
   return (
-    <div className="max-w-xl mx-auto p-6 mt-10 bg-white shadow rounded space-y-4">
-      <h2 className="text-2xl font-bold">Criar Atração</h2>
+    <div className="w-full p-4 space-y-4">
+      <h2 className="text-xl font-semibold text-center">Criar Atração</h2>
 
-      {status === 'success' && <p className="text-green-600">Atração criada com sucesso!</p>}
-      {status === 'error' && <p className="text-red-600">Erro ao criar atração.</p>}
+      {status === 'success' && <p className="text-green-600 text-center">Atração criada com sucesso!</p>}
+      {status === 'error' && <p className="text-red-600 text-center">Erro ao criar atração.</p>}
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
@@ -109,7 +113,13 @@ function CreateAttractionForm() {
         </div>
 
         <div>
-          <TextInput type="number" name="DurationMinutes" value={form.DurationMinutes || ''} onChange={handleChange} placeholder="Duração (minutos)" />
+          <TextInput
+            type="number"
+            name="DurationMinutes"
+            value={form.DurationMinutes || ''}
+            onChange={handleChange}
+            placeholder="Duração (minutos)"
+          />
           {errors.DurationMinutes && <p className="text-red-500 text-sm">{errors.DurationMinutes}</p>}
         </div>
 
@@ -121,7 +131,12 @@ function CreateAttractionForm() {
         <TextInput name="AddressTwo" value={form.AddressTwo} onChange={handleChange} placeholder="Morada 2" />
 
         <div>
-          <select name="IdCountry" value={form.IdCountry} onChange={handleChange} className="w-full p-2 border rounded">
+          <select
+            name="IdCountry"
+            value={form.IdCountry}
+            onChange={handleChange}
+            className="w-full p-2 border rounded"
+          >
             <option value="">Seleciona um país</option>
             {countries.map(country => (
               <option key={country.id} value={country.id}>{country.name}</option>
@@ -130,28 +145,27 @@ function CreateAttractionForm() {
           {errors.IdCountry && <p className="text-red-500 text-sm">{errors.IdCountry}</p>}
         </div>
 
-        <div>
-            <ImageFields
-              images={form.Images}
-              onImageChange={handleImageChange}
-              onAddImage={addImage}
-              onRemoveImage={removeImage}
-              errors={errors}
-            />
-        </div>
+        <ImageFields
+          images={form.Images}
+          onImageChange={handleImageChange}
+          onAddImage={addImage}
+          onRemoveImage={removeImage}
+          errors={errors}
+        />
 
-        <div>
-          <InfoFields
-            infos={form.Infos}
-            onInfoChange={handleInfoChange}
-            onAddInfo={addInfo}
-            onRemoveInfo={removeInfo}
-            infoTypes={infoTypes}
-            errors={errors}
-          />
-        </div>
+        <InfoFields
+          infos={form.Infos}
+          onInfoChange={handleInfoChange}
+          onAddInfo={addInfo}
+          onRemoveInfo={removeInfo}
+          infoTypes={infoTypes}
+          errors={errors}
+        />
 
-        <button type="submit" className="bg-blue-600 text-black px-4 py-2 rounded hover:bg-blue-700">
+        <button
+          type="submit"
+          className="bg-blue-600 px-4 py-2 rounded w-full hover:bg-blue-700"
+        >
           Criar
         </button>
       </form>
