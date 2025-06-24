@@ -72,7 +72,7 @@ function CreateAttractionForm() {
     }
 
     try {
-      await axios.post('http://localhost:8080/deisi2056/api/Attraction/attraction', form);
+      await axios.post('http://adventour.duckdns.org:8080/api/Attraction/attraction', form);
       setStatus('success');
       setForm({
         ...initialFormState,
