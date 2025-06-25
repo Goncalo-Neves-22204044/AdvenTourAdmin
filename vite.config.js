@@ -8,6 +8,7 @@ export default defineConfig({
   server: {
     host: true,      // Allow access from outside the container
     port: 5173,      // Optional (default is 5173)
-    strictPort: true // Avoid port fallbacks like 5174, etc.
+    strictPort: true, 
+    allowedHosts: ['adventour.duckdns.org']// Avoid port fallbacks like 5174, etc.
   }
 })
