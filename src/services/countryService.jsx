@@ -1,6 +1,12 @@
-import axios from 'axios';
+import api from '../api';
 
 export async function getAllCountries() {
-  const response = await axios.get('http://localhost:8080/deisi2056/api/Country/countries/all');
+  const response = await api.get('/Country/countries/all');
   return response.data.data;
 }
+
+
+// src/services/countryService.js
+
+
+

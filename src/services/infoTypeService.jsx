@@ -1,6 +1,6 @@
-import axios from 'axios';
+import api from './api';
 
-export async function getAllInfoTypes() {
-  const response = await axios.get('http://localhost:8080/deisi2056/api/Attraction/infoTypes');
+export async function getAllCountries() {
+  const response = await api.get('/Attraction/infoTypes');
   return response.data.data;
 }

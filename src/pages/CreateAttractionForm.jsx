@@ -7,7 +7,7 @@ import { useCountries } from '../hooks/useCountries';
 import { useInfoTypes } from '../hooks/useInfoTypes';
 import ImageFields from '../components/Attraction/ImageFields';
 import InfoFields from '../components/Attraction/InfoFields';
-import axios from 'axios';
+import api from '../services/api';
 
 function CreateAttractionForm() {
   const [form, setForm] = useState(initialFormState);
@@ -72,7 +72,7 @@ function CreateAttractionForm() {
     }
 
     try {
-      await axios.post('http://adventour.duckdns.org:8080/api/Attraction/attraction', form);
+      await api.post('/Attraction/attraction', form);
       setStatus('success');
       setForm({
         ...initialFormState,
