@@ -5,8 +5,3 @@ export async function getAllCountries() {
   return response.data.data;
 }
 
-
-// src/services/countryService.js
-
-
-

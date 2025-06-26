@@ -1,4 +1,3 @@
-// src/components/TextInput.jsx
 function TextInput({ name, value, onChange, placeholder, type = 'text', required = false }) {
   return (
     <input

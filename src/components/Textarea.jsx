@@ -1,4 +1,3 @@
-// src/components/Textarea.jsx
 function Textarea({ name, value, onChange, placeholder }) {
   return (
     <textarea
