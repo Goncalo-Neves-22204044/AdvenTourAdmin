@@ -3,17 +3,16 @@ import TextInput from '../components/TextInput';
 import Textarea from '../components/Textarea';
 import { initialFormState } from '../constants/AttractionFormDefault';
 import { validateAttractionForm } from '../utils/validateAttractionForm';
-import { useCountries } from '../hooks/useCountries';
 import { useInfoTypes } from '../hooks/useInfoTypes';
 import ImageFields from '../components/Attraction/ImageFields';
 import InfoFields from '../components/Attraction/InfoFields';
+import CountryDropdown from '../components/CountryDropdown';
 import api from '../services/api';
 
 function CreateAttractionForm() {
   const [form, setForm] = useState(initialFormState);
   const [status, setStatus] = useState(null);
   const [errors, setErrors] = useState({});
-  const { countries } = useCountries();
   const { infoTypes } = useInfoTypes();
 
   const handleChange = (e) => {
@@ -131,17 +130,11 @@ function CreateAttractionForm() {
         <TextInput name="AddressTwo" value={form.AddressTwo} onChange={handleChange} placeholder="Morada 2" />
 
         <div>
-          <select
-            name="IdCountry"
+          <CountryDropdown
             value={form.IdCountry}
-            onChange={handleChange}
-            className="w-full p-2 border rounded"
-          >
-            <option value="">Seleciona um país</option>
-            {countries.map(country => (
-              <option key={country.id} value={country.id}>{country.name}</option>
-            ))}
-          </select>
+            onChange={(id) => handleChange({ target: { name: 'IdCountry', value: id } })}
+            includeAllOption={false}
+          />
           {errors.IdCountry && <p className="text-red-500 text-sm">{errors.IdCountry}</p>}
         </div>
 

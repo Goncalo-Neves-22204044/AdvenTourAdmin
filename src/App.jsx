@@ -51,13 +51,13 @@ function App() {
 
           <div className="flex justify-center space-x-4">
             <button
-              className={`px-4 py-2 rounded ${selectedPage === 'add' ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
+              className={`px-4 py-2 rounded ${selectedPage === 'add' ? 'bg-blue-600 text-black' : 'bg-gray-200'}`}
               onClick={() => setSelectedPage('add')}
             >
               Adicionar Atração
             </button>
             <button
-              className={`px-4 py-2 rounded ${selectedPage === 'delete' ? 'bg-red-600 text-white' : 'bg-gray-200'}`}
+              className={`px-4 py-2 rounded ${selectedPage === 'delete' ? 'bg-red-600 text-black' : 'bg-gray-200'}`}
               onClick={() => setSelectedPage('delete')}
             >
               Apagar Atração
