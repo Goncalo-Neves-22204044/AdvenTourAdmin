@@ -32,9 +32,9 @@ function DeleteAttractionPage() {
     }
   };
 
-  const filteredAttractions = selectedCountry
-    ? attractions.filter((a) => a.Country === selectedCountry)
-    : attractions;
+  const filteredAttractions = attractions.filter(
+  (attraction) => !selectedCountry || attraction.country === selectedCountry
+  );
 
   if (loading) return <p>A carregar...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
@@ -56,7 +56,7 @@ function DeleteAttractionPage() {
             <li key={a.id} className="flex justify-between items-center bg-gray-100 p-3 rounded shadow-sm">
               <span>{a.name}</span>
               <button
-                className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+                className="bg-red-500 text-black px-3 py-1 rounded hover:bg-red-600"
                 onClick={() => handleDelete(a.id)}
               >
                 Apagar
