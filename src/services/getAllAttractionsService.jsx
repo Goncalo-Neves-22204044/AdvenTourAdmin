@@ -1,5 +1,5 @@
 export async function getAllAttractions() {
-  const response = await fetch(`${import.meta.env.VITE_API_URL}/api/attraction/admin/all`, {
+  const response = await fetch(`${import.meta.env.VITE_API_URL}/attraction/admin/all`, {
     headers: {
       'X-ADMIN-KEY': import.meta.env.VITE_BACKEND_API_KEY,
     },
