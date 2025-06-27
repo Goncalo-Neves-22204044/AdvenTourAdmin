@@ -13,7 +13,7 @@ function CountryDropdown({ value, onChange, includeAllOption = true }) {
       >
         {includeAllOption && <option value="">-- Todos os países --</option>}
         {countries.map((country) => (
-          <option key={country.code} value={country.id}>
+          <option key={country.code} value={country.Id}>
             {country.name}
           </option>
         ))}
