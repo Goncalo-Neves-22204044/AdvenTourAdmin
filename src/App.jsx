@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import CreateAttractionForm from './pages/CreateAttractionForm';
+import DeleteAttractionPage from './pages/DeleteAttractionPage';
 
 function App() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [selectedPage, setSelectedPage] = useState('add'); // 'add' or 'delete'
 
   const handleLogin = () => {
     const validEmail = import.meta.env.VITE_ADMIN_USER;
@@ -46,7 +48,24 @@ function App() {
       ) : (
         <div className="bg-white p-6 rounded shadow max-w-2xl w-full space-y-6">
           <h2 className="text-2xl font-bold text-center">Área de Administração</h2>
-          <CreateAttractionForm />
+
+          <div className="flex justify-center space-x-4">
+            <button
+              className={`px-4 py-2 rounded ${selectedPage === 'add' ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
+              onClick={() => setSelectedPage('add')}
+            >
+              Adicionar Atração
+            </button>
+            <button
+              className={`px-4 py-2 rounded ${selectedPage === 'delete' ? 'bg-red-600 text-white' : 'bg-gray-200'}`}
+              onClick={() => setSelectedPage('delete')}
+            >
+              Apagar Atração
+            </button>
+          </div>
+
+          {selectedPage === 'add' && <CreateAttractionForm />}
+          {selectedPage === 'delete' && <DeleteAttractionPage />}
         </div>
       )}
     </div>
