@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import CreateAttractionForm from './pages/CreateAttractionForm';
 import DeleteAttractionPage from './pages/DeleteAttractionPage';
+import LogoutButton from './components/LogoutButton'; // <--- novo
 
 function App() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [selectedPage, setSelectedPage] = useState('add'); // 'add' or 'delete'
+  const [selectedPage, setSelectedPage] = useState('add');
 
   const handleLogin = () => {
     const validEmail = import.meta.env.VITE_ADMIN_USER;
@@ -20,7 +21,9 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4 relative">
+      {isAuthenticated && <LogoutButton />} {/* <-- Aqui está o botão visível em todas as páginas */}
+
       {!isAuthenticated ? (
         <div className="bg-white p-6 rounded shadow max-w-sm w-full">
           <h2 className="text-xl font-semibold mb-4 text-center">Admin Login</h2>

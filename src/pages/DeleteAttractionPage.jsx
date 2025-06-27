@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { deleteAttraction } from '../services/deleteAttractionService';
 import { getAllAttractions } from '../services/getAllAttractionsService';
-import CountryDropdown from '../components/CountryDropdown'; // <- novo componente unificado
+import CountryDropdown from '../components/CountryDropdown';
 
 function DeleteAttractionPage() {
   const [selectedCountry, setSelectedCountry] = useState('');
@@ -41,11 +41,11 @@ function DeleteAttractionPage() {
     ? attractions.filter(a => a.country === selectedCountry)
     : attractions;
 
-  if (loading) return <p>A carregar...</p>;
-  if (error) return <p className="text-red-500">{error}</p>;
+  if (loading) return <p className="text-black">A carregar...</p>;
+  if (error) return <p className="text-black">{error}</p>;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 text-black">
       <h3 className="text-xl font-semibold text-center">Apagar Atrações</h3>
 
       <CountryDropdown
