@@ -6,7 +6,7 @@ import { validateAttractionForm } from '../utils/validateAttractionForm';
 import { useInfoTypes } from '../hooks/useInfoTypes';
 import ImageFields from '../components/Attraction/ImageFields';
 import InfoFields from '../components/Attraction/InfoFields';
-import CountryDropdown from '../components/CountryDropdown';
+import CountryDropdown from '../components/CountryDropdown'; // <- substituído
 import api from '../services/api';
 
 function CreateAttractionForm() {
@@ -15,53 +15,28 @@ function CreateAttractionForm() {
   const [errors, setErrors] = useState({});
   const { infoTypes } = useInfoTypes();
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm(prev => ({
-      ...prev,
-      [name]: ['DurationMinutes', 'IdCountry'].includes(name) ? Number(value) : value
-    }));
+  const updateFormField = (name, value) => {
+    const parsedValue = ['DurationMinutes', 'IdCountry'].includes(name) ? Number(value) : value;
+    setForm(prev => ({ ...prev, [name]: parsedValue }));
   };
 
-  const handleImageChange = (index, field, value) => {
-    const updated = [...form.Images];
-    updated[index][field] = value;
-    setForm(prev => ({ ...prev, Images: updated }));
+  const updateFormArray = (arrayName, index, field, value, parseToNumber = false) => {
+    const updated = [...form[arrayName]];
+    updated[index][field] = parseToNumber ? Number(value) : value;
+    setForm(prev => ({ ...prev, [arrayName]: updated }));
   };
 
-  const addImage = () => {
-    setForm(prev => ({
-      ...prev,
-      Images: [...prev.Images, { PictureRef: '', IsMain: false }]
-    }));
+  const addFormArrayItem = (arrayName, newItem) => {
+    setForm(prev => ({ ...prev, [arrayName]: [...prev[arrayName], newItem] }));
   };
 
-  const removeImage = (index) => {
-    const updated = form.Images.filter((_, i) => i !== index);
-    setForm(prev => ({ ...prev, Images: updated }));
-  };
-
-  const handleInfoChange = (index, field, value) => {
-    const updated = [...form.Infos];
-    updated[index][field] = field === 'IdAttractionInfoType' ? Number(value) : value;
-    setForm(prev => ({ ...prev, Infos: updated }));
-  };
-
-  const addInfo = () => {
-    setForm(prev => ({
-      ...prev,
-      Infos: [...prev.Infos, { Title: '', Description: '', IdAttractionInfoType: '' }]
-    }));
-  };
-
-  const removeInfo = (index) => {
-    const updated = form.Infos.filter((_, i) => i !== index);
-    setForm(prev => ({ ...prev, Infos: updated }));
+  const removeFormArrayItem = (arrayName, index) => {
+    const updated = form[arrayName].filter((_, i) => i !== index);
+    setForm(prev => ({ ...prev, [arrayName]: updated }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const validationErrors = validateAttractionForm(form);
     setErrors(validationErrors);
 
@@ -96,18 +71,30 @@ function CreateAttractionForm() {
       {status === 'error' && <p className="text-red-600 text-center">Erro ao criar atração.</p>}
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <TextInput name="Name" value={form.Name} onChange={handleChange} placeholder="Nome" />
-          {errors.Name && <p className="text-red-500 text-sm">{errors.Name}</p>}
-        </div>
+        {[ 
+          { name: 'Name', placeholder: 'Nome' },
+          { name: 'ShortDescription', placeholder: 'Descrição curta' },
+          { name: 'AddressOne', placeholder: 'Morada 1' },
+          { name: 'AddressTwo', placeholder: 'Morada 2' }
+        ].map(({ name, placeholder }) => (
+          <div key={name}>
+            <TextInput
+              name={name}
+              value={form[name]}
+              onChange={(e) => updateFormField(name, e.target.value)}
+              placeholder={placeholder}
+            />
+            {errors[name] && <p className="text-red-500 text-sm">{errors[name]}</p>}
+          </div>
+        ))}
 
         <div>
-          <TextInput name="ShortDescription" value={form.ShortDescription} onChange={handleChange} placeholder="Descrição curta" />
-          {errors.ShortDescription && <p className="text-red-500 text-sm">{errors.ShortDescription}</p>}
-        </div>
-
-        <div>
-          <Textarea name="LongDescription" value={form.LongDescription} onChange={handleChange} placeholder="Descrição longa" />
+          <Textarea
+            name="LongDescription"
+            value={form.LongDescription}
+            onChange={(e) => updateFormField('LongDescription', e.target.value)}
+            placeholder="Descrição longa"
+          />
           {errors.LongDescription && <p className="text-red-500 text-sm">{errors.LongDescription}</p>}
         </div>
 
@@ -116,41 +103,36 @@ function CreateAttractionForm() {
             type="number"
             name="DurationMinutes"
             value={form.DurationMinutes || ''}
-            onChange={handleChange}
+            onChange={(e) => updateFormField('DurationMinutes', e.target.value)}
             placeholder="Duração (minutos)"
           />
           {errors.DurationMinutes && <p className="text-red-500 text-sm">{errors.DurationMinutes}</p>}
         </div>
 
         <div>
-          <TextInput name="AddressOne" value={form.AddressOne} onChange={handleChange} placeholder="Morada 1" />
-          {errors.AddressOne && <p className="text-red-500 text-sm">{errors.AddressOne}</p>}
-        </div>
-
-        <TextInput name="AddressTwo" value={form.AddressTwo} onChange={handleChange} placeholder="Morada 2" />
-
-        <div>
           <CountryDropdown
             value={form.IdCountry}
-            onChange={(id) => handleChange({ target: { name: 'IdCountry', value: id } })}
+            onChange={(id) => updateFormField('IdCountry', id)}
+            valueKey="id"
             includeAllOption={false}
+            placeholder="-- Seleciona um país --"
           />
           {errors.IdCountry && <p className="text-red-500 text-sm">{errors.IdCountry}</p>}
         </div>
 
         <ImageFields
           images={form.Images}
-          onImageChange={handleImageChange}
-          onAddImage={addImage}
-          onRemoveImage={removeImage}
+          onImageChange={(i, f, v) => updateFormArray('Images', i, f, v)}
+          onAddImage={() => addFormArrayItem('Images', { PictureRef: '', IsMain: false })}
+          onRemoveImage={(i) => removeFormArrayItem('Images', i)}
           errors={errors}
         />
 
         <InfoFields
           infos={form.Infos}
-          onInfoChange={handleInfoChange}
-          onAddInfo={addInfo}
-          onRemoveInfo={removeInfo}
+          onInfoChange={(i, f, v) => updateFormArray('Infos', i, f, v, f === 'IdAttractionInfoType')}
+          onAddInfo={() => addFormArrayItem('Infos', { Title: '', Description: '', IdAttractionInfoType: '' })}
+          onRemoveInfo={(i) => removeFormArrayItem('Infos', i)}
           infoTypes={infoTypes}
           errors={errors}
         />
